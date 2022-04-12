@@ -8,4 +8,29 @@
   <artifactId>adapter-persistence-spring-data-jpa</artifactId>
   <name>adapter-persistence-spring-data-jpa</name>
   <description>adapter-persistence-spring-data-jpa</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.pratique.archi.hexa</groupId>
+			<artifactId>domain</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>

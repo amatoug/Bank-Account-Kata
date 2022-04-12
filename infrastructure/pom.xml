@@ -10,7 +10,6 @@
   <name>infrastructure</name>
   <description>infrastructure</description>
   <modules>
-  	<module>adapter-persistence-in-memory</module>
   	<module>adapter-persistence-spring-data-jpa</module>
   	<module>adapter-rest</module>
   </modules>
