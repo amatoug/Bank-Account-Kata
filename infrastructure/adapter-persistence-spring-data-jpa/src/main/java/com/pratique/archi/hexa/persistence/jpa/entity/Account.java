@@ -13,19 +13,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ACCOUNT")
 public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ACCOUNT_ID")
 	private Integer accountId;
 
-	@Column(name = "ACC_NUM")
+	@Column(name = "ACC_NUM",unique = true)
 	private String accountNumber;
 
 	@Column(name = "BALANCE")
@@ -34,5 +40,5 @@ public class Account {
     @OneToMany(mappedBy="account",cascade = CascadeType.ALL)
 	private List<AccountTransaction> transactions = new ArrayList<AccountTransaction>();
 
-    
+
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.pratique.archi.hexa.domain.exception.MaxDepositPerDayException;
+import com.pratique.archi.hexa.domain.exception.BusinessException;
 import com.pratique.archi.hexa.domain.exception.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -19,8 +19,8 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(MaxDepositPerDayException.class)
-	public ResponseEntity<ErrorMessage> maxDepositPerDayException(MaxDepositPerDayException ex, WebRequest request) {
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<ErrorMessage> maxDepositPerDayException(BusinessException ex, WebRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_ACCEPTABLE.value(), ex.getMessage(),
 				request.getDescription(false));
 
