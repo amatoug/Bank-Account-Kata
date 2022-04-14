@@ -1,5 +1,6 @@
 package com.pratique.archi.hexa.service.adapter.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import com.pratique.archi.hexa.domain.model.AccountDto;
 import com.pratique.archi.hexa.domain.model.AccountTransactionDto;
 import com.pratique.archi.hexa.service.api.AccountService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class AccountControllerImpl implements AccountController {
 
@@ -35,14 +39,22 @@ public class AccountControllerImpl implements AccountController {
 
 	@Override
 	public ResponseEntity<List<AccountDto>> getAccounts() {
-        return new ResponseEntity<List<AccountDto>>(accountService.getAccounts(), HttpStatus.OK);
+		return new ResponseEntity<List<AccountDto>>(accountService.getAccounts(), HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Void> makeWithDrawal(AccountTransactionDto accountTransaction)
-			throws BusinessException {
+	public ResponseEntity<Void> makeWithDrawal(AccountTransactionDto accountTransaction) throws BusinessException {
 		accountService.makeWithDrawal(accountTransaction);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<AccountTransactionDto>> getAccountHistory(String accountNumber, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+
+		return new ResponseEntity<List<AccountTransactionDto>>(
+				accountService.getAccountHistoryByAccountNumberAndPeriod(accountNumber, fromDate, toDate),
+				HttpStatus.OK);
 	}
 
 }

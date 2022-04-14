@@ -1,5 +1,6 @@
 package com.pratique.archi.hexa.service.adapter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,13 @@ public class AccountServiceAdapter implements AccountService {
 	public void makeWithDrawal(AccountTransactionDto accountTransaction) throws BusinessException {
 		accountPersistencePort.makeWithDrawal(accountTransaction);
 		
+	}
+
+	@Override
+	public List<AccountTransactionDto> getAccountHistoryByAccountNumberAndPeriod(String accountNumber, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+		return accountPersistencePort.getAccountHistoryByAccountNumberAndPeriod(accountNumber,fromDate,toDate);
+
 	}
 
 }

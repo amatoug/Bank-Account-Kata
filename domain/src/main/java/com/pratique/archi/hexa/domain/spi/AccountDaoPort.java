@@ -1,5 +1,6 @@
 package com.pratique.archi.hexa.domain.spi;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.pratique.archi.hexa.domain.exception.BusinessException;
@@ -15,5 +16,8 @@ public interface AccountDaoPort {
 	List<AccountDto> getAccounts();
 
 	void makeWithDrawal(AccountTransactionDto accountTransaction) throws BusinessException;
+
+	List<AccountTransactionDto> getAccountHistoryByAccountNumberAndPeriod(String accountNumber, LocalDateTime fromDate,
+			LocalDateTime toDate);
 
 }

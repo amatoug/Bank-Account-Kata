@@ -10,4 +10,7 @@ import com.pratique.archi.hexa.persistence.jpa.entity.AccountTransaction;
 public interface AccountTransactionRepository extends JpaRepository<AccountTransaction, Integer> {
 
 	List<AccountTransaction> findByAccountAccountNumberAndDateBetweenAndType(String accountNumber,LocalDateTime StartOfDay, LocalDateTime endOfDay, int type);
+	
+	List<AccountTransaction> findByAccountAccountNumberAndDateBetweenOrderByType(String accountNumber,LocalDateTime StartOfDay, LocalDateTime endOfDay);
+
 }

@@ -2,6 +2,7 @@ package com.pratique.archi.hexa.persistence.jpa.adapter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.pratique.archi.hexa.domain.model.TransactionTypeEnum;
 import com.pratique.archi.hexa.domain.spi.AccountDaoPort;
 import com.pratique.archi.hexa.persistence.jpa.entity.Account;
 import com.pratique.archi.hexa.persistence.jpa.entity.AccountTransaction;
+import com.pratique.archi.hexa.persistence.jpa.mapper.AccountTransactionMapper;
 import com.pratique.archi.hexa.persistence.jpa.repository.AccountRepository;
 import com.pratique.archi.hexa.persistence.jpa.repository.AccountTransactionRepository;
 
@@ -59,7 +61,7 @@ public class AccountDaoAdapter implements AccountDaoPort {
 
 		
 		LocalDate currentDay =  LocalDate.now();
-		List<AccountTransaction> deposits = accountTransactionRepository.findByAccountAccountNumberAndDateBetweenAndType(accountTransaction.getAccountNumber(), LocalDate.now().atStartOfDay(), LocalTime.MAX.atDate(currentDay), TransactionTypeEnum.DEPOSIT.getId());
+		List<AccountTransaction> deposits = accountTransactionRepository.findByAccountAccountNumberAndDateBetweenAndType(accountTransaction.getAccountNumber(), LocalDate.now().atStartOfDay(), LocalTime.MAX.atDate(currentDay), TransactionTypeEnum.DEPOSIT.getCode());
 
 
 		if (!CollectionUtils.isEmpty(deposits)) {
@@ -78,7 +80,7 @@ public class AccountDaoAdapter implements AccountDaoPort {
 		}
 		if (deposits != null && deposits.size() < MAX_DEPOSIT_TRANSACTIONS_PER_DAY) {
 			AccountTransaction transactionEntity = AccountTransaction.builder()
-					.account(account.get()).type(TransactionTypeEnum.DEPOSIT.getId())
+					.account(account.get()).type(TransactionTypeEnum.DEPOSIT.getCode())
 					.amount(accountTransaction.getAmount()).date(accountTransaction.getDate()).build();
 
 			AccountTransaction savedTransaction = accountTransactionRepository.save(transactionEntity);
@@ -145,7 +147,7 @@ public class AccountDaoAdapter implements AccountDaoPort {
             // check maximum limit withdrawal for the day has been reached
         
 			LocalDate currentDay =  LocalDate.now();
-			List<AccountTransaction> withdrawals  = accountTransactionRepository.findByAccountAccountNumberAndDateBetweenAndType(accountTransaction.getAccountNumber(), LocalDate.now().atStartOfDay(), LocalTime.MAX.atDate(currentDay), TransactionTypeEnum.WITHDRAWAL.getId());
+			List<AccountTransaction> withdrawals  = accountTransactionRepository.findByAccountAccountNumberAndDateBetweenAndType(accountTransaction.getAccountNumber(), LocalDate.now().atStartOfDay(), LocalTime.MAX.atDate(currentDay), TransactionTypeEnum.WITHDRAWAL.getCode());
 
 
             if (!CollectionUtils.isEmpty(withdrawals)) {
@@ -170,7 +172,7 @@ public class AccountDaoAdapter implements AccountDaoPort {
             // check whether transactions exceeds the max allowed per day
             if (withdrawals!= null && withdrawals.size() < MAX_WITHDRAWAL_TRANSACTIONS_PER_DAY) {
     			AccountTransaction transactionEntity = AccountTransaction.builder()
-    					.account(account.get()).type(TransactionTypeEnum.WITHDRAWAL.getId())
+    					.account(account.get()).type(TransactionTypeEnum.WITHDRAWAL.getCode())
     					.amount(accountTransaction.getAmount()).date(accountTransaction.getDate()).build();
 
             	
@@ -193,4 +195,14 @@ public class AccountDaoAdapter implements AccountDaoPort {
 
 		
 	}
+
+
+	@Override
+	public List<AccountTransactionDto> getAccountHistoryByAccountNumberAndPeriod(String accountNumber, LocalDateTime fromDate,
+			LocalDateTime toDate) {
+		List<AccountTransaction> transactions = accountTransactionRepository.findByAccountAccountNumberAndDateBetweenOrderByType(accountNumber, fromDate, toDate);
+		return AccountTransactionMapper.mapEntitiesIntoDTOs(transactions);	
+}
+
+
 }

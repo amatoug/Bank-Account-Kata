@@ -20,7 +20,7 @@ public class AccountTransactionDto {
 
 	private String accountNumber;
 
-	private int type;
+	private TransactionTypeEnum type;
 
 	private BigDecimal amount;
 
